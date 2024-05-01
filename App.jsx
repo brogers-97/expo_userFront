@@ -19,6 +19,8 @@ function HomeScreen ({ navigation }) {
     setLoginPress(isLogin)
   }
 
+
+  //CLEAN SCREEN WHEN ENTERING
   useFocusEffect(
     React.useCallback(() => {
       setErrorMessage('')
@@ -43,9 +45,12 @@ function HomeScreen ({ navigation }) {
         username,
         password
     })
+    //IF SUCCESSFUL RESPONSE FROM SERVER...
     .then(response => {
+      //SET TOKEN FROM SERVER IN ASYNCSTORAGE
         AsyncStorage.setItem('token', response.data.token)
           .then(() => {
+            //THEN NAVIGATE TO NEW SCREEN WITH TOKEN IN ASYNCSTORAGE
             navigation.navigate('Success', { token: response.data.token } )
           })
           .catch(error => console.log('Error storing token:', error))
@@ -142,10 +147,14 @@ function HomeScreen ({ navigation }) {
 
 
 
-
+//SEPERATE SCREEN
 function SuccessScreen({ navigation, route }) {
   const [tokenValid, setTokenValid] = useState(false)
 
+
+
+
+  //VERIFY THAT TOKEN EXISTS BEFORE RENDERING PAGE
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -163,6 +172,10 @@ function SuccessScreen({ navigation, route }) {
     verifyToken()
 
   }, [])
+
+
+
+
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('token')
@@ -193,7 +206,7 @@ function SuccessScreen({ navigation, route }) {
 
 
 
-
+//SCREEN NAVIGATION
 export default function App() {
   return (
     <NavigationContainer>
@@ -205,6 +218,16 @@ export default function App() {
   )
 }
 
+
+
+
+
+
+
+
+
+
+//STYLES
 const styles = StyleSheet.create({
   container: {
     flex: 1,
